@@ -33,6 +33,7 @@
 *.app
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 !.vscode/tasks.json
 !.vscode/launch.json
