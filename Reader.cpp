@@ -5,7 +5,7 @@
 #include <cstring>
 using namespace std;
 
-#include "Byte.cpp"
+// #include "Byte.cpp"
 
 
 Byte readInputByte() {

@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-#include "Byte.cpp"
+// #include "Byte.cpp"
 
 class Byte2 {
     private:
