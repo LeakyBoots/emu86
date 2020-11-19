@@ -35,8 +35,10 @@ class Byte2 {
 
         void setByte2(unsigned short int n) {
             value = n;
-            Byte temph(n>>8);
-            Byte templ(n & 0x00FF);
+            higher->setByte(n >> 8);
+            lower->setByte(n & 0x00FF);
+            //setHigher(n >> 8);
+            //setLower(n & 0x00FF);
         }
 };
 
@@ -64,24 +66,38 @@ int Byte2ToDec(Byte2 b) {
 
 /*int main() {
 
-    Byte hb(0xAB);
-    Byte lb(0xCD);
-    Byte zb(0xFF);
+    // // Byte hb(0xAB);
+    // // Byte lb(0xCD);
+    // //Byte zb(0xFF);
 
-    Byte2 test(hb, lb);
-    test.printByte2();
-    test.getHigher().printByte();
-    test.getLower().printByte();
+    // // Byte2 test(hb, lb);
+    // Byte2 *test = new Byte2;
+    // Byte hb = test->getHigher();
+    // Byte lb = test->getLower();
 
-    test.setLower(zb);
-    test.printByte2();
-    test.getHigher().printByte();
-    test.getLower().printByte();
+    // test->setHigher(hb);
+    // hb.setByte(0xBB);
+    
+    // test->printByte2();
+    // test->getHigher().printByte();
+    // test->getLower().printByte();
+    // hb.printByte();
+    // lb.printByte();
 
-    test.setByte2(0b11111111);
-    test.printByte2();
-    test.getHigher().printByte();
-    test.getLower().printByte();
+    // // test.setByte2(0xFF);
+    // // test.printByte2();
+    // // test.getHigher().printByte();
+    // // test.getLower().printByte();
+
+    // // test.setLower(zb);
+    // // test.printByte2();
+    // // test.getHigher().printByte();
+    // // test.getLower().printByte();
+
+    // // test.setByte2(0b11111111);
+    // // test.printByte2();
+    // // test.getHigher().printByte();
+    // // test.getLower().printByte();
     
     return 0;
 }*/

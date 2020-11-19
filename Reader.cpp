@@ -23,7 +23,7 @@ vector<Byte> readFileByteArray(string file_name) {
 
     if(file) {
         while (fread(&buffer, sizeof(buffer), 1, file)) {
-            printf("READ: %X\n",buffer);
+            //printf("READ: %X\n",buffer);
             Byte temp(buffer);
             storeBytes.push_back(temp);
         }

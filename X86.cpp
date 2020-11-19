@@ -1,11 +1,12 @@
 #include <iostream>
+#include <bitset>
 using namespace std;
 
-#include "Byte.cpp"
-#include "Byte2.cpp"
-#include "Reader.cpp"
+// #include "Byte.cpp"
+// #include "Byte2.cpp"
+// #include "Reader.cpp"
 
-class x86 {
+class X86 {
     private:
         // General Purpose Registers
         Byte *AH = new Byte;
@@ -36,41 +37,135 @@ class x86 {
         Byte2 *ES = new Byte2();
 
     public:
-        x86() {}
+        X86() {}
 
         void printRegs();
-        void DecodeExecute(Byte, Byte); 
+        void DecodeExecute(Byte, Byte);
+
+        Byte getAH() {return *AH;}        
+        Byte getAL() {return *AL;}
+        Byte getBH() {return *BH;}
+        Byte getBL() {return *BL;}
+        Byte getCH() {return *CH;}
+        Byte getCL() {return *CL;}
+        Byte getDH() {return *DH;}
+        Byte getDL() {return *DL;}
+
+        Byte2 getAX() {return *AX;}
+        Byte2 getBX() {return *BX;}
+        Byte2 getCX() {return *CX;}
+        Byte2 getDX() {return *DX;}
+
+        Byte2 getSI() {return *SI;}
+        Byte2 getDI() {return *DI;}
+        Byte2 getBP() {return *BP;}
+        Byte2 getSP() {return *SP;}
+
+        Byte2 getIP() {return *IP;}
+        Byte2 getFLAGS() {return *FLAGS;}
+        Byte2 getCS() {return *CS;}
+        Byte2 getDS() {return *DS;}
+        Byte2 getSS() {return *SS;}
+        Byte2 getES() {return *ES;}
+
+        void setAH(unsigned char n) {
+            AH->setByte(n);
+            AX->setHigher(n);
+        }        
+        void setAL(unsigned char n) {
+            AL->setByte(n);
+            AX->setLower(n);
+        }
+        void setBH(unsigned char n) {
+            BH->setByte(n);
+            BX->setHigher(n);    
+        }
+        void setBL(unsigned char n) {
+            BL->setByte(n);
+            BX->setLower(n);    
+        }
+        void setCH(unsigned char n) {
+            CH->setByte(n);
+            CX->setHigher(n);    
+        }
+        void setCL(unsigned char n) {
+            CL->setByte(n);
+            CX->setLower(n);    
+        }
+        void setDH(unsigned char n) {
+            DH->setByte(n);
+            DX->setHigher(n);    
+        }
+        void setDL(unsigned char n) {
+            DL->setByte(n);
+            DX->setLower(n);    
+        }
+
+        void setAX(unsigned short int n) {
+            AX->setByte2(n);
+            AH->setByte(n >> 8);
+            AL->setByte(n & 0x00FF);
+        }
+        void setBX(unsigned short int n) {
+            BX->setByte2(n);
+            BH->setByte(n >> 8);
+            BL->setByte(n & 0x00FF);
+        }
+        void setCX(unsigned short int n) {
+            CX->setByte2(n);
+            CH->setByte(n >> 8);
+            CL->setByte(n & 0x00FF);
+        }
+        void setDX(unsigned short int n) {
+            DX->setByte2(n);
+            DH->setByte(n >> 8);
+            DL->setByte(n & 0x00FF);
+        }
+
+        void setSI(unsigned short int n) {SI->setByte2(n);}
+        void setDI(unsigned short int n) {DI->setByte2(n);}
+        void setBP(unsigned short int n) {BP->setByte2(n);}
+        void setSP(unsigned short int n) {SP->setByte2(n);}
+
+        void setIP(unsigned short int n) {IP->setByte2(n);}
+        void setFLAGS(unsigned short int n) {FLAGS->setByte2(n);}
+        void setCS(unsigned short int n) {CS->setByte2(n);}
+        void setDS(unsigned short int n) {DS->setByte2(n);}
+        void setSS(unsigned short int n) {SS->setByte2(n);}
+        void setES(unsigned short int n) {ES->setByte2(n);}
+
+
 };
 
 
-void x86::printRegs() {
+void X86::printRegs() {
     printf("GENERAL PURPOSE REGISTERS:\n");
     printf("16 Bit:\t    8 Bit:\n");
-    printf("AX: %X\tAH: %X\tAL: %X\n", this->AX->getByte2(), this->AH->getByte(), this->AL->getByte());
-    printf("BX: %X\tBH: %X\tBL: %X\n", this->BX->getByte2(), this->BH->getByte(), this->BL->getByte());
-    printf("CX: %X\tCH: %X\tCL: %X\n", this->CX->getByte2(), this->CH->getByte(), this->CL->getByte());
-    printf("DX: %X\tDH: %X\tDL: %X\n", this->DX->getByte2(), this->DH->getByte(), this->DL->getByte());
+    printf("AX: %04X    AH: %02X\tAL: %02X\n", this->AX->getByte2(), this->AH->getByte(), this->AL->getByte());
+    printf("BX: %04X    BH: %02X\tBL: %02X\n", this->BX->getByte2(), this->BH->getByte(), this->BL->getByte());
+    printf("CX: %04X    CH: %02X\tCL: %02X\n", this->CX->getByte2(), this->CH->getByte(), this->CL->getByte());
+    printf("DX: %04X    DH: %02X\tDL: %02X\n", this->DX->getByte2(), this->DH->getByte(), this->DL->getByte());
     printf("SPECIALIZED REGISTERS:\n");
-    printf("SI: %X\tDI: %X\tBP: %X\tSP: %X\n", this->SI->getByte2(), this->DI->getByte2(), this->BP->getByte2(), this->SP->getByte2());
-    printf("CS: %X\tDS: %X\tSS: %X\tES: %X\n", this->CS->getByte2(), this->DS->getByte2(), this->SS->getByte2(), this->ES->getByte2());
-    printf("IP: %X\n", this->IP->getByte2());
-    printf("FLAGS: %X\n", this->FLAGS->getByte2());
-    
-    printf("\n");
+    printf("SI: %04X    DI: %04X    BP: %04X    SP: %04X\n", this->SI->getByte2(), this->DI->getByte2(), this->BP->getByte2(), this->SP->getByte2());
+    printf("CS: %04X    DS: %04X    SS: %04X    ES: %04X\n", this->CS->getByte2(), this->DS->getByte2(), this->SS->getByte2(), this->ES->getByte2());
+    printf("IP: %04X\n", this->IP->getByte2());
+    // printf("FLAGS: %X\n", this->FLAGS->getByte2());
+    cout << "FLAGS: " << bitset<16>(this->FLAGS->getByte2())  << endl;
+    // printf("\n");
 }
 
-void x86::DecodeExecute(Byte input1, Byte input2) {
-    unsigned char insth = input1.getByte();
-    unsigned char instl = input2.getByte();
-    printf("Instruction entered: %X%x\n", insth, instl);
+// void X86::DecodeExecute(Byte input1, Byte input2) {
+//     unsigned char insth = input1.getByte();
+//     unsigned char instl = input2.getByte();
+//     printf("Instruction entered: %X%x\n", insth, instl);
 
 
-    // Instruction to be exeacuted
+//     // Instruction to be exeacuted
 
-}
+// }
 
 // int main() {
-//     x86 Test;
+//     X86 Test;
 //     Test.printRegs();
 //
 //     Byte *input = new Byte;
